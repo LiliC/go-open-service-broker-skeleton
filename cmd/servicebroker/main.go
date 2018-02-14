@@ -12,6 +12,7 @@ import (
 
 	"github.com/golang/glog"
 
+	"github.com/pmorie/osb-starter-pack/pkg/metrics"
 	"github.com/pmorie/osb-starter-pack/pkg/rest"
 	"github.com/pmorie/osb-starter-pack/pkg/server"
 	"github.com/pmorie/osb-starter-pack/pkg/user"
@@ -59,6 +60,11 @@ func runWithContext(ctx context.Context) error {
 	}
 
 	addr := ":" + strconv.Itoa(options.Port)
+
+	reg := metrics.New()
+	if err := metrics.Register(reg); err != nil {
+		return err
+	}
 
 	businessLogic, err := user.NewBusinessLogic(options.Options)
 	if err != nil {
